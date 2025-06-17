@@ -202,7 +202,7 @@ Kami menerima kontribusi! Silakan:
 
 ## 📝 Lisensi
 
-Distributed under the MIT License. See `LICENSE` for more information.
+See `LICENSE` for more information.
 
 ## 📞 Kontak & Support
 
