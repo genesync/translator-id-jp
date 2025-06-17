@@ -206,9 +206,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📞 Kontak & Support
 
-- **Email**: support@yourapp.com
-- **GitHub Issues**: [Report Bug](https://github.com/your-username/repo/issues)
-- **Documentation**: [Wiki](https://github.com/your-username/repo/wiki)
+- **Email**: genesync@gmail.com
+- **GitHub Issues**: [Report Bug](https://github.com/genesync/translator-id-jp/issues)
+- **Documentation**: [Wiki](https://github.com/genesync/translator-id-jp/wiki)
 
 ## 🙏 Acknowledgments
 

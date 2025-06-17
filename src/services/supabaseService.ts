@@ -1,6 +1,5 @@
+import { supabase } from './../lib/supabaseClient'
 
-// Mock Supabase service for demonstration
-// In production, this should be connected to actual Supabase
 interface User {
   id: string;
   email: string;
@@ -21,54 +20,62 @@ interface Translation {
   created_at: string;
 }
 
-class MockSupabaseService {
-  private user: User | null = null;
-  private translations: Translation[] = [];
-
+class RealSupabaseService {
   async signInWithGoogle(): Promise<{ user: User }> {
-    // Mock Google sign in
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.user = {
-          id: 'mock-user-id',
-          email: 'user@example.com',
-          user_metadata: {
-            full_name: 'Demo User',
-            avatar_url: 'https://via.placeholder.com/32'
-          }
-        };
-        resolve({ user: this.user });
-      }, 1000);
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
     });
+
+    if (error) throw error;
+    // Note: redirect will happen. Use `getCurrentUser` after login.
+    return { user: null as any } // sementara karena Google login redirect-based
   }
 
   async signOut(): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.user = null;
-        resolve();
-      }, 500);
-    });
+    const { error } = await supabase.auth.signOut()
+    if (error) throw error
   }
 
   async getCurrentUser(): Promise<User | null> {
-    return this.user;
+    const { data } = await supabase.auth.getUser()
+    if (!data.user) return null
+
+    const { id, email, user_metadata } = data.user
+    return { id, email, user_metadata } as User
   }
 
   async saveTranslation(translation: Omit<Translation, 'id' | 'user_id'>): Promise<Translation> {
-    const newTranslation: Translation = {
-      ...translation,
-      id: Date.now().toString(),
-      user_id: this.user?.id || 'mock-user-id'
-    };
-    
-    this.translations.unshift(newTranslation);
-    return newTranslation;
+    const user = await this.getCurrentUser()
+    if (!user) throw new Error('User not authenticated')
+
+    const { data, error } = await supabase
+      .from('translations')
+      .insert([
+        {
+          ...translation,
+          user_id: user.id,
+        }
+      ])
+      .select()
+      .single()
+
+    if (error) throw error
+    return data as Translation
   }
 
   async getTranslations(): Promise<Translation[]> {
-    return this.translations.filter(t => t.user_id === this.user?.id);
+    const user = await this.getCurrentUser()
+    if (!user) throw new Error('User not authenticated')
+
+    const { data, error } = await supabase
+      .from('translations')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return data as Translation[]
   }
 }
 
-export const supabaseService = new MockSupabaseService();
+export const supabaseService = new RealSupabaseService()
