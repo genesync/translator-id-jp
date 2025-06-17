@@ -230,7 +230,7 @@ const ApiSettings = () => {
                       <Input
                         id={`api-key-${provider.id}`}
                         type="password"
-                        value={apiKeys[provider.id]}
+                        value={apiKeys[provider.id] ?? ''}
                         onChange={(e) => handleApiKeyChange(provider.id, e.target.value)}
                         placeholder={
                           provider.requiresKey 

@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
+import { Link } from "react-router-dom";
+import ModalPricing from "@/components/ModalPricing";
 
 interface HeaderProps {
   user: any;
@@ -43,6 +45,9 @@ const Header = ({ user, onSignOut }: HeaderProps) => {
                     {user.user_metadata?.full_name || user.email}
                   </span>
                 </div>
+            
+                <ModalPricing />
+                
                 <Button
                   variant="outline"
                   size="sm"
