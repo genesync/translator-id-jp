@@ -236,12 +236,17 @@ const Index = () => {
               Terjemahan berkualitas tinggi dengan Multi-API untuk JLPT N5-N3
             </p>
           </div>
-          <Link to="/settings">
-            <Button variant="outline" className="flex items-center space-x-2">
-              <Settings className="w-4 h-4" />
-              <span>Pengaturan API</span>
-            </Button>
-          </Link>
+        </div>
+        
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-center flex-1">
+            <Link to="/settings">
+              <Button variant="outline" className="flex items-center space-x-2">
+                <Settings className="w-4 h-4" />
+                <span>Pengaturan API</span>
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {!hasConfiguredApi ? (
